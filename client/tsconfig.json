@@ -12,7 +12,9 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
-    "importHelpers": true,
+    "importHelpers": true,   
+    "typeRoots": ["node_modules/@types"],
+    "types": ["express"],
     "target": "ES2022",
     "module": "ES2022"
   },
