@@ -14,6 +14,9 @@ export class PortalService {
   categories: string[] = [];
   urgencyLevels: string[] = [];
 
+  getCharityCase(id:number){
+    return this.http.get<CharityCase>(this.baseUrl+'charityCases/'+ id)
+  }
 
   getCharityCases(portalParams: PortalParams){
     let params = new HttpParams();
@@ -34,6 +37,7 @@ export class PortalService {
 
     return this.http.get<Pagination<CharityCase>>(this.baseUrl + 'charitycases', {params});
   }
+ 
   
 
   getCategories(){

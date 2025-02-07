@@ -1,10 +1,10 @@
 <header class="border-b p-3 width-full shadow-md">
   <link href="/tailwind.css" rel="stylesheet">
   <div class="flex align-middle items-center justify-between max-w-screen-2xl mx-auto">
-    <img src="/images/3d1.jpg" alt="app logo" class="max-h-16">
-    <nav class="flex gap-3 my-2 uppercase text-xl">
-      <a>Home</a>
-      <a>Charity Cases</a>
+    <img routerLink="/" src="/images/3d1.jpg" alt="app logo" class="max-h-16">
+    <nav class="flex gap-3 my-2 uppercase text-2xl">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
+      <a routerLink="/portal"  routerLinkActive="active">Charity Cases</a>
       <a>Contacts</a>
     </nav>
     <div class="flex gap-3 align-middle">
