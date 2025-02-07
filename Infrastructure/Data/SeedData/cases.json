@@ -10,7 +10,7 @@
     "requestDate": "2025-01-17T00:00:00",
     "endDate": "2025-02-17T00:00:00",
     "isActive": true,
-    "imageUrl": "https://example.com/images/aliya.jpg",
+    "imageUrl": "../images/cases/case1.png",
     "beneficiaryName": "Aliya M."
   },
   { 
@@ -24,7 +24,7 @@
     "requestDate": "2025-01-17T00:00:00",
     "endDate": "2025-02-17T00:00:00",
     "isActive": true,
-    "imageUrl": "https://example.com/images/school_supplies.jpg",
+    "imageUrl": "../images/cases/case1.png",
     "beneficiaryName": "Refugee Support Center"
   },
   {
@@ -37,7 +37,7 @@
     "requestDate": "2025-01-10",
     "endDate": "2025-04-01",
     "isActive": true,
-    "imageUrl": "https://example.com/images/clean_water.jpg",
+    "imageUrl": "../images/cases/case1.png",
     "beneficiaryName": "Village Community of Chirwa"
   },
   {
@@ -50,7 +50,7 @@
     "requestDate": "2025-01-17T00:00:00",
     "endDate": "2025-02-17T00:00:00",
     "isActive": true,
-    "imageUrl": "https://example.com/images/earthquake_relief.jpg",
+    "imageUrl": "../images/cases/case1.png",
     "beneficiaryName": "Earthquake Survivors Network"
   },
   {
@@ -63,7 +63,7 @@
     "requestDate": "2025-01-17T00:00:00",
     "endDate": "2025-02-17T00:00:00",
     "isActive": true,
-    "imageUrl": "https://example.com/images/housing_aid.jpg",
+    "imageUrl": "../images/cases/case1.png",
     "beneficiaryName": "City Housing Initiative"
   },
   {
@@ -76,7 +76,7 @@
    "requestDate": "2025-01-17T00:00:00",
     "endDate": "2025-02-17T00:00:00",
     "isActive": true,
-    "imageUrl": "https://example.com/images/prosthetics.jpg",
+    "imageUrl": "../images/cases/case1.png",
     "beneficiaryName": "Hope for Limbs Foundation"
   },
   {
@@ -89,7 +89,7 @@
    "requestDate": "2025-01-17T00:00:00",
     "endDate": "2025-02-17T00:00:00",
     "isActive": true,
-    "imageUrl": "https://example.com/images/winter_clothing.jpg",
+    "imageUrl": "../images/cases/case1.png",
     "beneficiaryName": "Warm Hearts Organization"
   },
   {
@@ -102,7 +102,7 @@
    "requestDate": "2025-01-17T00:00:00",
     "endDate": "2025-02-17T00:00:00",
     "isActive": true,
-    "imageUrl": "https://example.com/images/education_orphans.jpg",
+    "imageUrl": "../images/cases/case1.png",
     "beneficiaryName": "Orphan Futures Trust"
   },
   {
@@ -115,7 +115,7 @@
     "requestDate": "2025-01-17T00:00:00",
     "endDate": "2025-02-17T00:00:00",
     "isActive": true,
-    "imageUrl": "https://example.com/images/food_drought.jpg",
+    "imageUrl": "../images/cases/case1.png",
     "beneficiaryName": "Drought Relief Organization"
   },
   {
@@ -128,7 +128,7 @@
     "requestDate": "2025-01-17T00:00:00",
     "endDate": "2025-02-17T00:00:00",
     "isActive": true,
-    "imageUrl": "https://example.com/images/cancer_support.jpg",
+    "imageUrl": "../images/cases/case1.png",
     "beneficiaryName": "Cancer Support Group"
   },
   {
@@ -141,7 +141,7 @@
    "requestDate": "2025-01-17T00:00:00",
     "endDate": "2025-02-17T00:00:00",
     "isActive": true,
-    "imageUrl": "https://example.com/images/war_rehabilitation.jpg",
+    "imageUrl": "../images/cases/case1.png",
     "beneficiaryName": "Survivors Foundation"
   },
   {
@@ -154,7 +154,7 @@
     "requestDate": "2025-01-17T00:00:00",
     "endDate": "2025-02-17T00:00:00",
     "isActive": true,
-    "imageUrl": "https://example.com/images/autism_support.jpg",
+    "imageUrl": "../images/cases/case1.png",
     "beneficiaryName": "Autism Care Society"
   }
 ]
