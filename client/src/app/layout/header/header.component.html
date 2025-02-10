@@ -1,11 +1,11 @@
-<header class="border-b p-3 width-full shadow-md">
+<header class="border-b p-3 w-full max-h-20 fixed top-0 z-50 bg-white">
   <link href="/tailwind.css" rel="stylesheet">
   <div class="flex align-middle items-center justify-between max-w-screen-2xl mx-auto">
     <img routerLink="/" src="/images/3d1.jpg" alt="app logo" class="max-h-16">
     <nav class="flex gap-3 my-2 uppercase text-2xl">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
       <a routerLink="/portal"  routerLinkActive="active">Charity Cases</a>
-      <a>Contacts</a>
+      <a routerLink="/test-error" routerLinkActive="active">Errors</a>
     </nav>
     <div class="flex gap-3 align-middle">
       
@@ -17,3 +17,6 @@
 
   </div>
 </header>
+@if(busyService.loading){
+  <mat-progress-bar mode="indeterminate" class="fixed  top-20 z-50"></mat-progress-bar>
+}
