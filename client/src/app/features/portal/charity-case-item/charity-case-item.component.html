@@ -1,6 +1,6 @@
 @if (charityCase){
-  <mat-card appearance="raised" routerLink="/portal/{{charityCase.id}}" class="charity-case-card">
-    <img src="{{charityCase.imageUrl}}" alt="image of {{charityCase.title}}">
+  <mat-card appearance="raised" routerLink="/portal/{{charityCase.id}}" class="charity-case-card p-2">
+    <img src="{{charityCase.imageUrl}}" alt="image of {{charityCase.title}} ">
     <mat-card-content class="mt-2">
       <h2 class="text-sm font-semibold uppercase">{{charityCase.title}}</h2>
       <p class="font-light">{{charityCase.amountRequested | currency}}</p>
