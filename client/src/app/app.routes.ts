@@ -5,11 +5,15 @@ import { CharityCaseDetailsComponent } from './features/portal/charity-case-deta
 import { TestErrorComponent } from './features/test-error/test-error.component';
 import { NotFoundComponent } from './shared/component/not-found/not-found.component';
 import { ServerErrorComponent } from './shared/component/server-error/server-error.component';
+import { LoginComponent } from './features/account/login/login.component';
+import { RegisterComponent } from './features/account/register/register.component';
 
 export const routes: Routes = [
   {path:'', component: HomeComponent},
   {path:'portal', component: PortalComponent},
   {path:'portal/:id', component: CharityCaseDetailsComponent},
+  {path:'account/login', component: LoginComponent},
+  {path:'account/register', component: RegisterComponent},
   {path:'test-error', component: TestErrorComponent},
   {path:'not-found', component: NotFoundComponent},
   {path:'server-error', component: ServerErrorComponent},
