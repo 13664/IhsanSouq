@@ -1,8 +1,11 @@
+using API.Controllers;
 using API.Middleware;
+using API.Services;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,12 +13,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddHttpClient<IMulticardService, MulticardService>();
+
 builder.Services.AddDbContext<CharityCaseContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddAuthorization();
-builder.Services.AddIdentityApiEndpoints<AppUser>().AddEntityFrameworkStores<CharityCaseContext>();
+builder.Services.AddIdentityApiEndpoints<AppUser>()
+.AddRoles<IdentityRole>().
+AddEntityFrameworkStores<CharityCaseContext>();
 builder.Services.AddScoped<ICharityCaseRepository, CharityCaseRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddCors();
@@ -30,8 +37,9 @@ try
     using var scope = app.Services.CreateScope();
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<CharityCaseContext>();
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
     await context.Database.MigrateAsync();
-    await CharityCaseSeed.SeedAsync(context);
+    await CharityCaseSeed.SeedAsync(context, userManager);
 }
 catch (System.Exception)
 {

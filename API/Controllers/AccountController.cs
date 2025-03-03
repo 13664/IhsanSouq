@@ -37,6 +37,10 @@ public class AccountController(SignInManager<AppUser> signInManager): BaseApiCon
     await signInManager.SignOutAsync();
     return NoContent();
   }
+  [HttpGet("auth-status")]
+  public ActionResult GetAuthState(){
+    return Ok(new{ IsAuthenticated =User.Identity?.IsAuthenticated ?? false});
+  }
   [HttpGet("user-info")]
   public async Task<ActionResult> GetUserInfo(){
     if (User.Identity?.IsAuthenticated == false) return NoContent();
@@ -47,7 +51,8 @@ public class AccountController(SignInManager<AppUser> signInManager): BaseApiCon
     return Ok(new{
       user.FirstName,
       user.LastName,
-      user.Email
+      user.Email,
+      Roles  = User.FindFirstValue(ClaimTypes.Role)
     });
 
   }

@@ -8,6 +8,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 import { AccountService } from '../../core/services/account.service';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatDivider } from '@angular/material/divider';
+import { IsAdminDirective } from '../../shared/directives/is-admin.directive';
 
 
 
@@ -16,6 +17,7 @@ import { MatDivider } from '@angular/material/divider';
   selector: 'app-header',
   imports: [
     MatIcon, 
+    IsAdminDirective,
     MatButton,
     MatBadge,
     RouterLink,

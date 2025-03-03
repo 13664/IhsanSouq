@@ -2,7 +2,8 @@
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
-  using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
@@ -33,6 +34,8 @@ public class CharityCasesController(IGenericRepository<CharityCase> repo) : Base
     var spec = new LevelListSpecification();
     return Ok(await repo.ListAsync(spec));
   }
+
+  [Authorize(Roles="Admin")]
   [HttpPost]
   public async Task<ActionResult<CharityCase>> CreateCharityCase(CharityCase charityCase)
   {
@@ -44,6 +47,7 @@ public class CharityCasesController(IGenericRepository<CharityCase> repo) : Base
 
     return BadRequest("Problem creating charity case");
   }
+  [Authorize(Roles="Admin")]
 
   [HttpPut("{id:int}")]
   public async Task<ActionResult> UpdateCharityCase(int id, CharityCase charityCase)
@@ -60,6 +64,7 @@ public class CharityCasesController(IGenericRepository<CharityCase> repo) : Base
 
   }
 
+  [Authorize(Roles="Admin")]
 
   [HttpDelete("{id:int}")]
   public async Task<ActionResult> DeleteCharityCase(int id)
