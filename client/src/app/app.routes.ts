@@ -10,20 +10,23 @@ import { RegisterComponent } from './features/account/register/register.componen
 import { AdminComponent } from './features/admin/admin.component';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
+import { PaymentStatusComponent } from './features/payment-status/paymentStatus.component';
 
 export const routes: Routes = [
-  {path:'', component: HomeComponent},
-  {path:'portal', component: PortalComponent},
-  {path:'portal/:id', component: CharityCaseDetailsComponent},
-  {path:'account/login', component: LoginComponent},
-  {path:'account/register', component: RegisterComponent},
-  {path:'test-error', component: TestErrorComponent},
-  {path:'not-found', component: NotFoundComponent},
-  {path:'server-error', component: ServerErrorComponent},
-  {path:'admin', component: AdminComponent,canActivate:[authGuard, adminGuard] },
+  { path: '', component: HomeComponent },
+  { path: 'portal', component: PortalComponent },
+  { path: 'portal/:id', component: CharityCaseDetailsComponent },
+  { path: 'payment-status', component: PaymentStatusComponent },
+  { path: 'account/login', component: LoginComponent },
+  { path: 'account/register', component: RegisterComponent },
+  { path: 'test-error', component: TestErrorComponent },
+  { path: 'not-found', component: NotFoundComponent },
+  { path: 'server-error', component: ServerErrorComponent },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [authGuard, adminGuard],
+  },
 
-  {path:'**', redirectTo: 'not-found', pathMatch: 'full'}
-
-
-
+  { path: '**', redirectTo: 'not-found', pathMatch: 'full' },
 ];

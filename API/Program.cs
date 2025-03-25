@@ -1,4 +1,3 @@
-using API.Controllers;
 using API.Middleware;
 using API.Services;
 using Core.Entities;
@@ -28,9 +27,16 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddCors();
 
 var app = builder.Build();
+
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:4200","https://localhost:4200"));
-app.MapControllers();
+//app.MapControllers();
+app.UseRouting();
+app.UseAuthorization(); // Make sure this is before UseEndpoints
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 app.MapGroup("api").MapIdentityApi<AppUser>(); //api/login
 try
 {

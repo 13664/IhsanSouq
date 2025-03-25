@@ -1,31 +1,38 @@
 @if (charityCase){
-  <section class="py-8">
-    <div class="max-w-screen-2xl px-4 mx-auto"> 
-      <div class="grid grid-cols-2 gap-8">
-        <div class="max-w-xl mx-auto">
-          <img class="w-full max-w-sm" src="{{charityCase.imageUrl}}" alt="the image of the case">
-
+<section class="py-8">
+  <div class="max-w-screen-2xl px-4 mx-auto">
+    <div class="grid grid-cols-2 gap-8">
+      <div class="max-w-xl mx-auto">
+        <img
+          class="w-full max-w-sm"
+          src="{{ charityCase.imageUrl }}"
+          alt="the image of the case"
+        />
+      </div>
+      <div>
+        <h1 class="text-2xl font-semibold text-gray-900">
+          {{ charityCase.title }}
+        </h1>
+        <div class="mt-4 items-center gap-4 flex">
+          <p class="text-3xl font-extrabold text-gray-900">
+            {{ charityCase.amountRequested | currency }}
+          </p>
         </div>
-       <div>
-          <h1 class="text-2xl font-semibold text-gray-900">{{charityCase.title}}</h1>
-          <div class="mt-4 items-center gap-4 flex">
-            <p class="text-3xl font-extrabold text-gray-900">{{charityCase.amountRequested | currency}}</p>
-          </div>
-          <div class="flex gap-4 mt-6">
-            <button mat-flat-button class="match-input">
-              <mat-icon>favorite</mat-icon>Donate
-            </button>
-            <mat-form-field appearance="outline" class="flex">
-              <mat-label>Sum to donate</mat-label>
-              <input matInput type="number">
-            </mat-form-field>
-          </div>
+        <div class="flex gap-4 mt-6">
+          <button mat-flat-button class="match-input" (click)="donate()">
+            <mat-icon>favorite</mat-icon>Donate
+          </button>
+          <mat-form-field appearance="outline" class="flex">
+            <mat-label>Sum to donate</mat-label>
+            <input matInput type="number" [(ngModel)]="donationAmount" />
+          </mat-form-field>
+        </div>
 
-          <mat-divider></mat-divider>
-          <p class="mb-6 text-gray-500">{{charityCase.description}}</p>
-       </div>
+        <mat-divider></mat-divider>
+        <p class="mb-6 text-gray-500">{{ charityCase.description }}</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
 }

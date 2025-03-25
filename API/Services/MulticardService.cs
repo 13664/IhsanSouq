@@ -1,94 +1,88 @@
-using System;
 using System.Text;
 using System.Text.Json;
-using System.Net.Http;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Core.Entities;
 
 namespace API.Services;
 public interface IMulticardService
-    {
+{
     Task<string> CreatePaymentInvoiceAsync(PaymentInvoiceRequest request);
     Task<string> GetAuthTokenAsync();
-    }
+}
 public class MulticardService : IMulticardService
 {
-        private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
-        private readonly ILogger<MulticardService> _logger;
+    private readonly HttpClient _httpClient;
+    private readonly IConfiguration _configuration;
+    private readonly ILogger<MulticardService> _logger;
 
-        private string _cachedToken;
-        private DateTime _tokenExpiry = DateTime.MinValue;
+    private string _cachedToken;
+    private DateTime _tokenExpiry = DateTime.MinValue;
 
-        public MulticardService(HttpClient httpClient, IConfiguration configuration, ILogger<MulticardService> logger)
+    public MulticardService(HttpClient httpClient, IConfiguration configuration, ILogger<MulticardService> logger)
+    {
+        _httpClient = httpClient;
+        _configuration = configuration;
+        _logger = logger;
+    }
+
+    public async Task<string> GetAuthTokenAsync()
+    {
+        if (!string.IsNullOrEmpty(_cachedToken) && DateTime.UtcNow < _tokenExpiry)
         {
-            _httpClient = httpClient;
-            _configuration = configuration;
-            _logger = logger;
+            return _cachedToken;
         }
 
-        public async Task<string> GetAuthTokenAsync()
+        var authEndpoint = _configuration["Multicard:AuthEndpoint"];
+        var applicationId = _configuration["Multicard:ApplicationId"];
+        var secret = _configuration["Multicard:Secret"];
+
+        var payload = new
         {
-            if (!string.IsNullOrEmpty(_cachedToken) && DateTime.UtcNow < _tokenExpiry)
+            application_id = "rhmt_test",
+            secret = "Pw18axeBFo8V7NamKHXX"
+        };
+
+        var jsonPayload = JsonSerializer.Serialize(payload);
+        var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+        try
+        {
+            var response = await _httpClient.PostAsync("https://dev-mesh.multicard.uz/auth", content);
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+            using (JsonDocument doc = JsonDocument.Parse(responseString))
             {
-                return _cachedToken;
-            }
-
-            var authEndpoint = _configuration["Multicard:AuthEndpoint"];
-            var applicationId = _configuration["Multicard:ApplicationId"];
-            var secret = _configuration["Multicard:Secret"];
-
-            var payload = new
-            {
-                application_id = applicationId,
-                secret = secret
-            };
-
-            var jsonPayload = JsonSerializer.Serialize(payload);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-
-            try
-            {
-                var response = await _httpClient.PostAsync(authEndpoint, content);
-                response.EnsureSuccessStatusCode();
-
-                var responseString = await response.Content.ReadAsStringAsync();
-                using (JsonDocument doc = JsonDocument.Parse(responseString))
+                var root = doc.RootElement;
+                if (root.TryGetProperty("token", out JsonElement tokenElement) &&
+                    root.TryGetProperty("expiry", out JsonElement expiryElement))
                 {
-                    var root = doc.RootElement;
-                    if (root.TryGetProperty("token", out JsonElement tokenElement) &&
-                        root.TryGetProperty("expiry", out JsonElement expiryElement))
-                    {
-                        _cachedToken = tokenElement.GetString();
+                    _cachedToken = tokenElement.GetString();
 
-                        if (DateTime.TryParse(expiryElement.GetString(), out DateTime expiry))
-                        {
-                            _tokenExpiry = expiry.ToUniversalTime();
-                        }
-                        else
-                        {
-                            _tokenExpiry = DateTime.UtcNow.AddHours(24);
-                        }
-                        _logger.LogInformation("Multicard token obtained successfully.");
-                        return _cachedToken;
+                    if (DateTime.TryParse(expiryElement.GetString(), out DateTime expiry))
+                    {
+                        _tokenExpiry = expiry.ToUniversalTime();
                     }
                     else
                     {
-                        _logger.LogError("Token or expiry field not found in the response.");
-                        throw new Exception("Invalid authentication response.");
+                        _tokenExpiry = DateTime.UtcNow.AddHours(24);
                     }
+                    _logger.LogInformation("Multicard token obtained successfully.");
+                    return _cachedToken;
+                }
+                else
+                {
+                    _logger.LogError("Token or expiry field not found in the response.");
+                    throw new Exception("Invalid authentication response.");
                 }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error obtaining Multicard token.");
-                throw;
-            }
-          }
-        
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error obtaining Multicard token.");
+            throw;
+        }
+    }
+
 
     public async Task<string> CreatePaymentInvoiceAsync(PaymentInvoiceRequest request)
     {
@@ -129,8 +123,7 @@ public class MulticardService : IMulticardService
             }
         }
     }
+}
 
-    }
-      
 
-        
+
