@@ -1,36 +1,19 @@
 <div class="flex items-center justify-center min-h-96 bg-gray-100">
   <div class="text-center">
-    <div class="payment-status">
-      <!-- Success Case -->
-      <div *ngIf="paymentStatus === 'success'" class="success">
-        <mat-icon class="text-green-600" style="font-size: 48px"
-          >check_circle</mat-icon
-        >
-        <h1>Payment Successful</h1>
-        <p>{{ message }}</p>
-      </div>
-
-      <!-- Fail Case -->
-      <div *ngIf="paymentStatus === 'fail'" class="fail">
-        <mat-icon class="text-red-600">cancel</mat-icon>
-        <h1>Payment Failed</h1>
-        <p>{{ message }}</p>
-      </div>
-
-      <!-- Error Case -->
-      <div *ngIf="paymentStatus === 'error'" class="error">
-        <mat-icon class="text-orange-600">error</mat-icon>
-        <h1>Payment Error</h1>
-        <p>{{ message }}</p>
-      </div>
-
-      <!-- Loading Case -->
-      <div *ngIf="!paymentStatus" class="loading">
-        <mat-icon class="text-blue-600">hourglass_empty</mat-icon>
-        <h1>Checking Payment Status...</h1>
-      </div>
+    <div
+      class="w-[500px] h-[calc(100vh-200px)] mx-auto border rounded shadow bg-white"
+    >
+      <iframe
+        *ngIf="checkoutUrl"
+        [src]="checkoutUrl | safeUrl"
+        width="100%"
+        height="100%"
+        class="rounded"
+        frameborder="0"
+      ></iframe>
     </div>
-    <button routerLink="/shop" mat-flat-button class="mt-4">
+
+    <button routerLink="/portal" mat-flat-button class="mt-4">
       Back to catalog
     </button>
   </div>

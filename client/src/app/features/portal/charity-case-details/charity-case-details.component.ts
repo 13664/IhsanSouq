@@ -51,36 +51,21 @@ export class CharityCaseDetailsComponent implements OnInit {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (!id) return;
 
-    this.paymentService.getPaymentAuthToken().subscribe({
+    const invoiceData = {
+      storeId: Number(id),
+      amount: this.donationAmount * 100,
+      invoiceId: 'INV-20250323-002',
+      returnUrl: 'https://localhost:4200/payment-status',
+    };
+
+    this.paymentService.createPaymentInvoice(invoiceData).subscribe({
       next: (response) => {
-        const token = response.token;
-
-        const invoiceData = {
-          store_id: Number(id),
-          amount: this.donationAmount * 100,
-          invoice_id: 'INV-20250323-002',
-          return_url: 'https://localhost:4200/payment-status',
-          callback_url: 'https://yourwebsite.com/payment-callback',
-        };
-
-        this.paymentService.createPaymentInvoice(invoiceData, token).subscribe({
-          next: (response) => {
-            const uuidSplit = response.uuid.split('/');
-            sessionStorage.setItem(
-              'payment-uuid',
-              uuidSplit[uuidSplit.length - 1]
-            );
-            window.location.href = response.uuid;
-          },
-          error: (error) => {
-            console.error('Error creating invoice:', error);
-            alert('Failed to process the donation. Please try again.');
-          },
-        });
+        sessionStorage.setItem('payment-uuid', response.payment_uuid);
+        window.location.href = response.checkout_url;
       },
       error: (error) => {
-        console.error('Error fetching auth token:', error);
-        alert('Failed to authenticate. Please try again.');
+        console.error('Error creating invoice:', error);
+        alert('Failed to process the donation. Please try again.');
       },
     });
   }

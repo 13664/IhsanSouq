@@ -1,5 +1,4 @@
 using API.Middleware;
-using API.Services;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure;
@@ -12,12 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddHttpClient<IMulticardService, MulticardService>();
+builder.Services.AddHttpClient<MulticardService>();
+builder.Services.AddSingleton<MulticardService>();
 
 builder.Services.AddDbContext<CharityCaseContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<AppUser>()
 .AddRoles<IdentityRole>().

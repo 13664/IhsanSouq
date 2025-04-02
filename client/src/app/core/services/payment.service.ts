@@ -6,35 +6,22 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class PaymentService {
-  baseUrl = 'https://localhost:5001/api/';
+  baseUrl = 'https://localhost:5001/api';
   private http = inject(HttpClient);
 
-  getPaymentAuthToken(): Observable<{ token: string }> {
-    return this.http.get<{ token: string }>(
-      `${this.baseUrl}Multicard/auth-token`
-    );
-  }
-
-  createPaymentInvoice(
-    invoiceData: {
-      store_id: number;
-      amount: number;
-      invoice_id: string;
-      return_url: string;
-      callback_url: string;
-    },
-    token: string
-  ): Observable<{ uuid: string }> {
-    return this.http.post<{ uuid: string }>(
-      `${this.baseUrl}Payment/create-invoice`,
-      invoiceData,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
+  createPaymentInvoice(invoiceData: {
+    storeId: number;
+    amount: number;
+    invoiceId: string;
+    returnUrl: string;
+  }): Observable<{ checkout_url: string; payment_uuid: string }> {
+    return this.http.post<{ checkout_url: string; payment_uuid: string }>(
+      `${this.baseUrl}/payment/create`,
+      invoiceData
     );
   }
 
   getPaymentStatus(invoiceId: string): Observable<any> {
-    return this.http.get(`https://dev-mesh.multicard.uz/payment/${invoiceId}`);
+    return this.http.get(`${this.baseUrl}/payment/status/${invoiceId}`);
   }
 }
