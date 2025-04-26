@@ -13,7 +13,9 @@ public class CharityCaseSeed
     if(!userManager.Users.Any(x => x.UserName == "admin@test.com")){
       var user = new AppUser{
         UserName = "admin@test.com",
-        Email = "admin@test.com"
+        Email = "admin@test.com" ,
+        FirstName = "Admin",        // <-- add
+    LastName = "User"     
       };
       await userManager.CreateAsync(user, "Pa$$0rd");
       await userManager.AddToRoleAsync(user, "Admin");

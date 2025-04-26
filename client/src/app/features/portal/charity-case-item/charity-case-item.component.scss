@@ -6,3 +6,28 @@
  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
  cursor: pointer;
 }
+/* Ensure all cards inside the grid are the same height */
+.charity-case-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between; /* This ensures that content is evenly spaced */
+}
+
+.charity-case-card img {
+  width: 100%;  /* Ensure the image takes up the full width */
+  height: 200px;  /* You can adjust the height as per your needs */
+  object-fit: cover;  /* This ensures the image aspect ratio is maintained */
+}
+
+.mat-card-content {
+  flex-grow: 1; /* Ensures the content area stretches and pushes the actions to the bottom */
+}
+
+.mat-card-actions {
+  margin-top: auto; /* This pushes the actions to the bottom of the card */
+}
+
+button.w-full {
+  width: 100%;
+}
