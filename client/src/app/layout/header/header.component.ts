@@ -10,40 +10,39 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatDivider } from '@angular/material/divider';
 import { IsAdminDirective } from '../../shared/directives/is-admin.directive';
 
-
-
-
 @Component({
   selector: 'app-header',
   imports: [
-    MatIcon, 
+    MatIcon,
     IsAdminDirective,
     MatButton,
     MatBadge,
     RouterLink,
-    RouterLinkActive, 
+    RouterLinkActive,
     MatProgressBar,
     MatMenuTrigger,
     MatMenuItem,
     MatMenu,
-    MatDivider
-
+    MatDivider,
   ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  busyService =inject(BusyService);
+  busyService = inject(BusyService);
   accountService = inject(AccountService);
   private router = inject(Router);
-  
-  logout(){
+
+  ngOnInit() {
+    this.accountService.getUserInfo().subscribe();
+  }
+
+  logout() {
     this.accountService.logout().subscribe({
       next: () => {
         this.accountService.currentUser.set(null);
         this.router.navigateByUrl('/');
-
-      }
-    })
+      },
+    });
   }
 }

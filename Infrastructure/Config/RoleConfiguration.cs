@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,8 +13,6 @@ public class RoleConfiguration : IEntityTypeConfiguration<IdentityRole>
             Id = Guid.NewGuid().ToString(), Name = "Admin", NormalizedName = "ADMIN"},
           new IdentityRole{
             Id = Guid.NewGuid().ToString(), Name = "Customer", NormalizedName = "CUSTOMER"}
-            
         );
-        
     }
 }
