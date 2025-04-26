@@ -19,11 +19,15 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { PortalParams } from '../../shared/models/portalParams';
 import { Pagination } from '../../shared/models/pagination';
 import { FormsModule } from '@angular/forms';
+import { AccountService } from '../../core/services/account.service';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-portal',
   imports: [
     MatCard,
+    CommonModule,
     CharityCaseItemComponent,
     MatButton,
     MatIcon,
@@ -41,6 +45,10 @@ export class PortalComponent implements OnInit {
   private portalService = inject(PortalService);
   private dialogService = inject(MatDialog);
   charityCases?: Pagination<CharityCase>;
+  private accountService = inject(AccountService);
+  private router = inject(Router);
+
+  isAdmin = this.accountService.isAdmin;
 
   sortOptions = [
     { name: 'Date:Old-New', value: 'dateAsc' },
@@ -51,6 +59,7 @@ export class PortalComponent implements OnInit {
 
   ngOnInit(): void {
     this.InitilizePortal();
+    console.log(this.isAdmin());
   }
 
   InitilizePortal() {
@@ -101,5 +110,13 @@ export class PortalComponent implements OnInit {
         }
       },
     });
+  }
+
+  onCreate() {
+    this.router.navigate(['/portal/create']);
+  }
+
+  onEdit(id: number) {
+    this.router.navigate(['/portal/edit', id]);
   }
 }

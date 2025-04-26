@@ -13,9 +13,11 @@ export class AccountService {
   currentUser = signal<User | null>(null);
 
   isAdmin = computed(() => {
-    const roles = this.currentUser()?.roles;
-    return Array.isArray(roles) ? roles.includes('Admin') : roles === 'Admin';
+    const token = !!localStorage.getItem('token');
+
+    return !!token;
   });
+
   login(values: any) {
     let params = new HttpParams();
     params = params.append('useCookies', true);
@@ -60,6 +62,7 @@ export class AccountService {
 
     return this.http.post(this.baseUrl + 'account/logout', {});
   }
+
   getAuthState() {
     return this.http.get<{ isAuthenticated: boolean }>(
       this.baseUrl + 'account/auth-status'

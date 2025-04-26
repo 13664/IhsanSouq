@@ -35,7 +35,7 @@ public class CharityCasesController(IGenericRepository<CharityCase> repo) : Base
     return Ok(await repo.ListAsync(spec));
   }
 
-  [Authorize(Roles="Admin")]
+  [Authorize]
   [HttpPost]
   public async Task<ActionResult<CharityCase>> CreateCharityCase(CharityCase charityCase)
   {
@@ -47,7 +47,7 @@ public class CharityCasesController(IGenericRepository<CharityCase> repo) : Base
 
     return BadRequest("Problem creating charity case");
   }
-  [Authorize(Roles="Admin")]
+  [Authorize]
 
   [HttpPut("{id:int}")]
   public async Task<ActionResult> UpdateCharityCase(int id, CharityCase charityCase)

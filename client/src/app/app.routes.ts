@@ -11,10 +11,13 @@ import { AdminComponent } from './features/admin/admin.component';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import { PaymentStatusComponent } from './features/payment-status/paymentStatus.component';
+import { CreateCharityCaseComponent } from './features/portal/charity-case-create/charity-case-create.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'portal', component: PortalComponent },
+  { path: 'portal/create', component: CreateCharityCaseComponent },
+  { path: 'portal/edit/:id', component: CreateCharityCaseComponent },
   { path: 'portal/:id', component: CharityCaseDetailsComponent },
   { path: 'payment-status', component: PaymentStatusComponent },
   { path: 'account/login', component: LoginComponent },
