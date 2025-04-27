@@ -59,7 +59,8 @@ export class AccountService {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.currentUser.set(null);
-
+    window.location.reload();
+    window.location.href = '/portal';
     return this.http.post(this.baseUrl + 'account/logout', {});
   }
 

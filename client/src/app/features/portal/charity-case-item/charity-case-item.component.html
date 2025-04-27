@@ -1,17 +1,30 @@
 @if (charityCase){
-  <mat-card appearance="raised" routerLink="/portal/{{charityCase.id}}" class="charity-case-card p-2">
-    <img src="{{charityCase.imageUrl}}" alt="image of {{charityCase.title}} ">
-    <mat-card-content class="mt-2">
-      <h2 class="text-sm font-semibold uppercase">{{charityCase.title}}</h2>
-      <p class="font-light">{{charityCase.amountRequested | currency}}</p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-stroked-button class="w-full">
-        <mat-icon>favorite</mat-icon>Donate
-      </button>
-    </mat-card-actions>
-  </mat-card>
-  
+<mat-card
+  appearance="raised"
+  routerLink="/portal/{{ charityCase.id }}"
+  class="charity-case-card p-2"
+>
+  <img
+    src="{{ charityCase.imageUrl }}"
+    alt="image of {{ charityCase.title }} "
+  />
+  <mat-card-content class="mt-2">
+    <h2 class="text-sm font-semibold uppercase">{{ charityCase.title }}</h2>
+    <p class="font-light">{{ charityCase.amountRequested | currency }}</p>
+  </mat-card-content>
+  <div class="gap-2 flex flex-col">
+    <button mat-stroked-button class="w-full">
+      <mat-icon>favorite</mat-icon>Donate
+    </button>
+    <button
+      class="w-full"
+      *ngIf="isAdmin()"
+      mat-stroked-button
+      (click)="onEdit(charityCase.id)"
+    >
+      <mat-icon>edit</mat-icon>Edit
+    </button>
+  </div>
+</mat-card>
+
 }
-
-

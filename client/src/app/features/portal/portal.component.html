@@ -60,23 +60,7 @@
   </div>
   <div class="grid grid-cols-4 gap-4">
     @for (charityCase of charityCases.data; track charityCase.id){
-    <div class="relative">
-      <app-charity-case-item
-        [charityCase]="charityCase"
-      ></app-charity-case-item>
-
-      <!-- Edit button for admins -->
-      <button
-        *ngIf="isAdmin()"
-        mat-mini-fab
-        color="accent"
-        class="absolute top-2 right-2"
-        (click)="onEdit(charityCase.id)"
-      >
-        <mat-icon>edit</mat-icon>
-      </button>
-    </div>
-
+    <app-charity-case-item [charityCase]="charityCase"></app-charity-case-item>
     }
   </div>
 </div>

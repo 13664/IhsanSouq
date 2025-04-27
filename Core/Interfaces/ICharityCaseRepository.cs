@@ -14,6 +14,6 @@ public interface ICharityCaseRepository
   void DeleteCharityCase(CharityCase charityCase);
   bool CharityCaseExits(int id);
   Task<bool> SaveChangesAsync();
-
+    Task<IReadOnlyList<Payment>> GetPaymentsByCharityCaseIdAsync(int charityCaseId);
 
 }

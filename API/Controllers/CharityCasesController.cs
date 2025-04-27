@@ -20,8 +20,8 @@ public class CharityCasesController(IGenericRepository<CharityCase> repo) : Base
   }
   [HttpGet("{id}")] // api/cases/1
   public async Task<ActionResult<CharityCase>> GetCharityCase(int id)
-  {
-    return await repo.GetByIdAsync(id);
+    {
+        return await repo.GetByIdAsync(id);
   }
   [HttpGet("categories")]
   public async Task<ActionResult<IReadOnlyList<string>>> GetCategoriess(){

@@ -1,38 +1,114 @@
-@if (charityCase){
+@if (charityCase) {
 <section class="py-8">
-  <div class="max-w-screen-2xl px-4 mx-auto">
-    <div class="grid grid-cols-2 gap-8">
-      <div class="max-w-xl mx-auto">
+  <div class="max-w-5xl px-6 mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Image Section -->
+      <div class="flex justify-center">
         <img
-          class="w-full max-w-sm"
-          src="{{ charityCase.imageUrl }}"
-          alt="the image of the case"
+          class="rounded-lg shadow-lg w-full max-w-sm"
+          [src]="charityCase.imageUrl"
+          alt="Image of the case"
         />
       </div>
-      <div>
-        <h1 class="text-2xl font-semibold text-gray-900">
+
+      <!-- Details Section -->
+      <div class="flex flex-col justify-center">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">
           {{ charityCase.title }}
         </h1>
-        <div class="mt-4 items-center gap-4 flex">
-          <p class="text-3xl font-extrabold text-gray-900">
-            {{ charityCase.amountRequested | currency }}
-          </p>
-        </div>
-        <div class="flex gap-4 mt-6">
-          <button mat-flat-button class="match-input" (click)="donate()">
-            <mat-icon>favorite</mat-icon>Donate
-          </button>
-          <mat-form-field appearance="outline" class="flex">
+        <p class="text-xl font-semibold text-green-600 mb-2">
+          {{ charityCase.amountRequested | currency : "UZS" }}
+        </p>
+        <p class="text-gray-600 mb-6">{{ charityCase.description }}</p>
+
+        <div class="flex items-center gap-4 mb-4">
+          <mat-form-field appearance="outline" class="flex-1">
             <mat-label>Sum to donate</mat-label>
             <input matInput type="number" [(ngModel)]="donationAmount" />
           </mat-form-field>
+          <button mat-flat-button color="primary" (click)="donate()">
+            <mat-icon>favorite</mat-icon> Donate
+          </button>
         </div>
 
         <mat-divider></mat-divider>
-        <p class="mb-6 text-gray-500">{{ charityCase.description }}</p>
+        <div class="mt-4">
+          <mat-progress-bar
+            mode="determinate"
+            [value]="getProgress()"
+            color="accent"
+          ></mat-progress-bar>
+          <div class="flex justify-between text-sm mt-1 text-gray-600">
+            <span
+              >Collected:
+              {{ charityCase.amountCollected / 100 | currency : "UZS" }}</span
+            >
+            <span
+              >Goal:
+              {{ charityCase.amountRequested / 100 | currency : "UZS" }}</span
+            >
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- Payments Table Section -->
+    <div *ngIf="payments.length > 0; else noPayments" class="mt-10">
+      <h2 class="text-center text-2xl font-semibold mb-4">
+        Payments for Charity Case
+      </h2>
+      <div class="overflow-x-auto rounded-lg shadow">
+        <table
+          mat-table
+          [dataSource]="payments"
+          class="min-w-full bg-white text-left text-sm mat-elevation-z8"
+        >
+          <!-- UUID Column -->
+          <ng-container matColumnDef="uuid">
+            <th mat-header-cell *matHeaderCellDef class="px-4 py-2">UUID</th>
+            <td mat-cell *matCellDef="let payment" class="px-4 py-2">
+              {{ payment.uuid }}
+            </td>
+          </ng-container>
+
+          <!-- Amount Column -->
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef class="px-4 py-2">Amount</th>
+            <td mat-cell *matCellDef="let payment" class="px-4 py-2">
+              {{ payment.amount / 100 | currency : "UZS" }}
+            </td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef class="px-4 py-2">Status</th>
+            <td mat-cell *matCellDef="let payment" class="px-4 py-2">
+              {{ payment.status }}
+            </td>
+          </ng-container>
+
+          <!-- Payment Time Column -->
+          <ng-container matColumnDef="paymentTime">
+            <th mat-header-cell *matHeaderCellDef class="px-4 py-2">
+              Payment Time
+            </th>
+            <td mat-cell *matCellDef="let payment" class="px-4 py-2">
+              {{ payment.paymentTime | date : "short" }}
+            </td>
+          </ng-container>
+
+          <!-- Header and Row Declarations -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+    </div>
+
+    <ng-template #noPayments>
+      <p class="text-center text-gray-500 mt-4">
+        No payments found for this charity case.
+      </p>
+    </ng-template>
   </div>
 </section>
-
 }

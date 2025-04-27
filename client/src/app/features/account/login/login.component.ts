@@ -42,7 +42,8 @@ export class LoginComponent {
     this.accountService.login(this.loginForm.value).subscribe({
       next: () => {
         this.accountService.getUserInfo().subscribe();
-        this.router.navigateByUrl(this.returnUrl);
+        window.location.reload();
+        window.location.href = this.returnUrl || '/portal';
       },
     });
   }

@@ -4,10 +4,11 @@ using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Data;
 
-public class CharityCaseRepository(CharityCaseContext context) : ICharityCaseRepository
+public class CharityCaseRepository(CharityCaseContext context, ILogger<CharityCaseRepository> logger) : ICharityCaseRepository
 {
   public void AddCharityCase(CharityCase charityCase)
   {
@@ -27,9 +28,19 @@ public class CharityCaseRepository(CharityCaseContext context) : ICharityCaseRep
   }
 
   public async Task<CharityCase> GetCharityCaseByIdAsync(int id)
-  {
-    return await context.CharityCases.FindAsync(id);
-  }
+    {
+        var charityCase = await context.CharityCases
+            .Include(c => c.Payments)
+            .FirstOrDefaultAsync(c => c.Id == id);
+
+        var payments = await context.Payments
+            .Where(p => p.CharityCaseId == id)
+        .ToListAsync();
+
+        logger.LogInformation($"Payments count: {payments.Count}");
+
+        return charityCase;
+    }
 
   public async Task<IReadOnlyList<CharityCase>> GetCharityCasessAsync(string? category, string? urgencyLevel, string? sort)
   {
@@ -70,4 +81,10 @@ public class CharityCaseRepository(CharityCaseContext context) : ICharityCaseRep
   {
     context.Entry(charityCase).State = EntityState.Modified;
   }
+    public async Task<IReadOnlyList<Payment>> GetPaymentsByCharityCaseIdAsync(int charityCaseId)
+    {
+        return await context.Payments
+            .Where(p => p.CharityCaseId == charityCaseId)
+            .ToListAsync();
+    }
 }

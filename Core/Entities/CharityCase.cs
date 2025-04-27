@@ -15,6 +15,5 @@ public class CharityCase : BaseEntity
   public bool IsActive { get; set; } // Indicates if the request is active
   public required string ImageUrl { get; set; } // Image associated with the request
   public required string BeneficiaryName { get; set; } // Name of the individual/group needing assistance
-
-  
+  public ICollection<Payment> Payments { get; set; } = new List<Payment>();
 }

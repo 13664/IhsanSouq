@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Infrastructure.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
@@ -14,13 +16,15 @@ public class PaymentController : ControllerBase
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _config;
     private readonly ILogger<PaymentController> _logger;
+    private readonly CharityCaseContext _context;
 
-    public PaymentController(MulticardService multicardService, IHttpClientFactory httpClientFactory, IConfiguration config, ILogger<PaymentController> logger)
+    public PaymentController(MulticardService multicardService, IHttpClientFactory httpClientFactory, IConfiguration config, ILogger<PaymentController> logger, CharityCaseContext context)
     {
         _multicardService = multicardService;
         _httpClientFactory = httpClientFactory;
         _config = config;
         _logger = logger;
+        _context = context;
     }
 
     [HttpPost("create")]
@@ -76,12 +80,11 @@ public class PaymentController : ControllerBase
     }
 
     [HttpPost("callback")]
-    public IActionResult PaymentCallback([FromBody] PaymentCallbackRequest request)
+    public async Task<IActionResult> PaymentCallback([FromBody] PaymentCallbackRequest request)
     {
         try
         {
             string secret = _config["Multicard:Secret"];
-
             string expectedSign = CreateMD5($"{request.store_id}{request.invoice_id}{request.amount}{secret}");
 
             if (request.sign != expectedSign)
@@ -90,7 +93,35 @@ public class PaymentController : ControllerBase
                 return BadRequest(new { success = false, message = "Sign verification failed" });
             }
 
-            // Add database write or user notification logic here
+            var charityCase = await _context.CharityCases
+                .FirstOrDefaultAsync(c => c.Id.ToString() == request.invoice_id);
+
+            if (charityCase != null)
+            {
+                _logger.LogInformation("Charity case found: Id={Id}, Current AmountCollected={AmountCollected}",
+                    charityCase.Id, charityCase.AmountCollected);
+            }
+            else
+            {
+                _logger.LogWarning("Charity case NOT found for InvoiceId={InvoiceId}", request.invoice_id);
+            }
+
+            if (charityCase != null)
+            {
+                var payment = new Core.Entities.Payment
+                {
+                    Uuid = request.uuid,
+                    CharityCaseId = charityCase.Id,
+                    Amount = request.amount,
+                    Status = "Success",
+                    PaymentTime = DateTime.UtcNow,
+                    CardPan = "" // You could fetch it if needed
+                };
+
+                charityCase.AmountCollected += request.amount; // 🔥 Update collected amount
+                _context.Payments.Add(payment);
+                await _context.SaveChangesAsync();
+            }
 
             return Ok(new { success = true, message = "OK" });
         }
@@ -100,6 +131,7 @@ public class PaymentController : ControllerBase
             return StatusCode(500, "Internal server error");
         }
     }
+
     [HttpGet("status/{uuid}")]
     public async Task<IActionResult> GetPaymentStatus(string uuid)
     {
@@ -186,6 +218,20 @@ public class PaymentController : ControllerBase
         }
     }
 
+    [HttpGet("case/{charityCaseId}")]
+    public async Task<ActionResult<IReadOnlyList<Core.Entities.Payment>>> GetPaymentsForCharityCase(int charityCaseId)
+    {
+        var payments = await _context.Payments
+            .Where(p => p.CharityCaseId == charityCaseId)
+            .ToListAsync();
+
+        if (payments == null || payments.Count == 0)
+        {
+            return NotFound("No payments found for the given charity case.");
+        }
+
+        return Ok(payments);
+    }
 
 
     private static string CreateMD5(string input)

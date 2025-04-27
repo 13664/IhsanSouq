@@ -59,7 +59,6 @@ export class PortalComponent implements OnInit {
 
   ngOnInit(): void {
     this.InitilizePortal();
-    console.log(this.isAdmin());
   }
 
   InitilizePortal() {
@@ -114,9 +113,5 @@ export class PortalComponent implements OnInit {
 
   onCreate() {
     this.router.navigate(['/portal/create']);
-  }
-
-  onEdit(id: number) {
-    this.router.navigate(['/portal/edit', id]);
   }
 }
