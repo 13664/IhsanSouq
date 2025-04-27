@@ -9,6 +9,8 @@ public class CharityCaseSeed
 {
   public static async Task SeedAsync(CharityCaseContext context, UserManager<AppUser> userManager)
   {
+  
+
 
     if(!userManager.Users.Any(x => x.UserName == "admin@test.com")){
       var user = new AppUser{

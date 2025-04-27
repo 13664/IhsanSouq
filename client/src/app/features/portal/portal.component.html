@@ -1,114 +1,88 @@
 @if (charityCases) {
-  <div class="flex flex-col gap-6">
-  
-    <!-- Fixed Top Toolbar -->
-    <div class="flex items-center justify-between gap-6 bg-white p-4 rounded-lg shadow-sm">
-  
-      <!-- Search Box (Left) -->
-      <form
-        #searchForm="ngForm"
-        (ngSubmit)="onSearchChange()"
-        class="relative flex items-center w-96"
-      >
-        <input
-          type="search"
-          name="search"
-          placeholder="Search charity cases..."
-          [(ngModel)]="portalParams.search"
-          class="w-full p-3 pl-10 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400"
-        />
-        <mat-icon class="absolute left-3 text-gray-400">search</mat-icon>
-      </form>
-  
-      <!-- Paginator (Center) -->
-      <div class="flex-shrink-0">
-        <mat-paginator
-          [length]="charityCases.count"
-          [pageSize]="portalParams.pageSize"
-          [pageIndex]="portalParams.pageNumber - 1"
-          [pageSizeOptions]="pageSizeOptions"
-          [showFirstLastButtons]="true"
-          (page)="handlePageEvent($event)"
-          class="bg-white rounded-lg"
-        ></mat-paginator>
-      </div>
-  
-      <!-- Buttons (Right) -->
-      <div class="flex gap-3 flex-shrink-0">
-        <button
-          mat-stroked-button
-          class="flex items-center gap-2"
-          (click)="openFilterDialog()"
-        >
-          <mat-icon>filter_list</mat-icon> Filters
-        </button>
-  
-        <button
-          mat-stroked-button
-          class="flex items-center gap-2"
-          [matMenuTriggerFor]="sortMenu"
-        >
-          <mat-icon>swap_vert</mat-icon> Sort
-        </button>
-  
-        <button
-          *ngIf="isAdmin()"
-          mat-flat-button
-          color="primary"
-          class="flex items-center gap-2"
-          (click)="onCreate()"
-        >
-          <mat-icon>add</mat-icon> Create
-        </button>
-      </div>
-  
-    </div>
-<<<<<<< HEAD
-  </div>
-  <div class="grid grid-cols-4 gap-4">
-    @for (charityCase of charityCases.data; track charityCase.id){
-    <app-charity-case-item [charityCase]="charityCase"></app-charity-case-item>
-    }
-=======
-  
-    <!-- Grid of Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      @for (charityCase of charityCases.data; track charityCase.id) {
-      <div class="relative">
-        <app-charity-case-item [charityCase]="charityCase"></app-charity-case-item>
-  
-        <!-- Admin Edit Button -->
-        <button
-          *ngIf="isAdmin()"
-          mat-mini-fab
-          color="accent"
-          class="absolute top-2 right-2"
-          (click)="onEdit(charityCase.id)"
-        >
-          <mat-icon>edit</mat-icon>
-        </button>
-      </div>
-      }
-    </div>
-  
->>>>>>> cf70a8eefbcf58ed3ffe5247fe804d471a0dfc4b
-  </div>
-  
-  <!-- Sort Menu -->
-  <mat-menu #sortMenu="matMenu">
-    <mat-selection-list
-      [multiple]="false"
-      (selectionChange)="onSortChange($event)"
+<div class="flex flex-col gap-6">
+  <!-- Fixed Top Toolbar -->
+  <div
+    class="flex items-center justify-between gap-6 bg-white p-4 rounded-lg shadow-sm"
+  >
+    <!-- Search Box (Left) -->
+    <form
+      #searchForm="ngForm"
+      (ngSubmit)="onSearchChange()"
+      class="relative flex items-center w-96"
     >
-      @for (sort of sortOptions; track $index) {
-      <mat-list-option
-        [value]="sort.value"
-        [selected]="portalParams.sort === sort.value"
+      <input
+        type="search"
+        name="search"
+        placeholder="Search charity cases..."
+        [(ngModel)]="portalParams.search"
+        class="w-full p-3 pl-10 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-400"
+      />
+      <mat-icon class="absolute left-3 text-gray-400">search</mat-icon>
+    </form>
+
+    <!-- Paginator (Center) -->
+    <div class="flex-shrink-0">
+      <mat-paginator
+        [length]="charityCases.count"
+        [pageSize]="portalParams.pageSize"
+        [pageIndex]="portalParams.pageNumber - 1"
+        [pageSizeOptions]="pageSizeOptions"
+        [showFirstLastButtons]="true"
+        (page)="handlePageEvent($event)"
+        class="bg-white rounded-lg"
+      ></mat-paginator>
+    </div>
+
+    <!-- Buttons (Right) -->
+    <div class="flex gap-3 flex-shrink-0">
+      <button
+        mat-stroked-button
+        class="flex items-center gap-2"
+        (click)="openFilterDialog()"
       >
-        {{ sort.name }}
-      </mat-list-option>
-      }
-    </mat-selection-list>
-  </mat-menu>
+        <mat-icon>filter_list</mat-icon> Filters
+      </button>
+
+      <button
+        mat-stroked-button
+        class="flex items-center gap-2"
+        [matMenuTriggerFor]="sortMenu"
+      >
+        <mat-icon>swap_vert</mat-icon> Sort
+      </button>
+
+      <button
+        *ngIf="isAdmin()"
+        mat-flat-button
+        color="primary"
+        class="flex items-center gap-2"
+        (click)="onCreate()"
+      >
+        <mat-icon>add</mat-icon> Create
+      </button>
+    </div>
+  </div>
+</div>
+<div class="grid grid-cols-4 gap-4">
+  @for (charityCase of charityCases.data; track charityCase.id){
+  <app-charity-case-item [charityCase]="charityCase"></app-charity-case-item>
   }
-  
+</div>
+
+<!-- Sort Menu -->
+<mat-menu #sortMenu="matMenu">
+  <mat-selection-list
+    [multiple]="false"
+    (selectionChange)="onSortChange($event)"
+  >
+    @for (sort of sortOptions; track $index) {
+    <mat-list-option
+      [value]="sort.value"
+      [selected]="portalParams.sort === sort.value"
+    >
+      {{ sort.name }}
+    </mat-list-option>
+    }
+  </mat-selection-list>
+</mat-menu>
+}

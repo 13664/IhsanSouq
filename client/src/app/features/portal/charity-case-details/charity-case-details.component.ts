@@ -64,7 +64,7 @@ export class CharityCaseDetailsComponent implements OnInit {
     if (!this.charityCase) return 0;
     const collected = this.charityCase.amountCollected;
     const requested = this.charityCase.amountRequested;
-    return requested > 0 ? (collected / requested) * 100 : 0;
+    return requested > 0 ? ((collected /100) / requested) * 100 : 0;
   }
 
   donate() {

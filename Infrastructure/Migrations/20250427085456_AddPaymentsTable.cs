@@ -67,14 +67,14 @@ namespace Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[,]
-                {
-                    { "84df286a-bc3d-4cac-9513-7886babdacb6", null, "Customer", "CUSTOMER" },
-                    { "86e1d40d-b5f6-44b3-8e3f-e22a83119cd2", null, "Admin", "ADMIN" }
-                });
+            // migrationBuilder.InsertData(
+            //     table: "AspNetRoles",
+            //     columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+            //     values: new object[,]
+            //     {
+            //         { "84df286a-bc3d-4cac-9513-7886babdacb6", null, "Customer", "CUSTOMER" },
+            //         { "86e1d40d-b5f6-44b3-8e3f-e22a83119cd2", null, "Admin", "ADMIN" }
+            //     });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_CharityCaseId",
